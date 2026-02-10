@@ -177,6 +177,25 @@ This makes it suitable as **infrastructure**, not just a single application.
 
 ---
 
+## Solana Integration: On-Chain Decision Proofs
+
+SolSentinel integrates with Solana by writing cryptographic proofs of its
+decision-confidence signals to Solana devnet using the Memo program.
+
+Each agent loop:
+
+1. Generates a decision-confidence signal
+2. Hashes the signal payload
+3. Commits the hash on-chain as a memo transaction
+
+This creates a verifiable, tamper-resistant audit trail of _when and why_
+SolSentinel recommended action or restraint.
+
+No funds are moved. No trades are executed.
+Solana is used purely as a coordination and trust layer for agents
+
+---
+
 ## Design Philosophy
 
 SolSentinel is an experiment in **meta-safety for autonomous systems**.

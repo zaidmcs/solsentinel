@@ -8,6 +8,7 @@ import { runSolSentinel } from "./runtime/sentinelRuntime";
 import { HackathonState } from "./state/hackathonState";
 import { emitSentinelSignal } from "./runtime/emitSignal";
 import { getSolSentinelSignal } from "./runtime/getSolSentinelSignal";
+import { writeSignalToSolana } from "./solana/writeSignalViaAgentWallet";
 
 export async function runAgentLoop(): Promise<void> {
   console.log("🔁 Agent loop started");
@@ -107,6 +108,16 @@ export async function runAgentLoop(): Promise<void> {
       hoursRemaining: status.timeRemainingMs / (1000 * 60 * 60),
     },
   );
+
+  const onchain = await writeSignalToSolana(sentinelSignal);
+
+  if (onchain.committed) {
+    console.log("⛓️ Solana Proof Committed");
+    console.log(`   Tx: ${onchain.txSig}`);
+  } else {
+    console.log("⛓️ Solana Proof Prepared");
+    console.log("   Status: non-blocking");
+  }
 
   emitSentinelSignal(sentinelSignal);
 }
